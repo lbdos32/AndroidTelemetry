@@ -1,58 +1,17 @@
 package luke.thesullies.com.gpstracker
 
-import android.location.LocationListener
+
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener2
+import android.hardware.SensorManager
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-
-
-
-
-import android.app.Activity
-import android.content.Context
-
-import android.content.Intent
-
-import android.content.IntentSender
-
-import android.content.pm.PackageManager
-import android.hardware.*
-
-import android.location.Geocoder
-
-import android.location.Location
-
-import android.os.Bundle
-
-import android.support.v4.app.ActivityCompat
-
-import android.support.v7.app.AppCompatActivity
-
-import android.util.Log
-
-import android.view.View
-
-import android.widget.Button
-
-import android.widget.TextView
-
-import com.google.android.gms.common.ConnectionResult
-
-import com.google.android.gms.common.GoogleApiAvailability
-
-import com.google.android.gms.common.api.GoogleApiClient
-
-import com.google.android.gms.common.api.ResultCallback
-
-import com.google.android.gms.common.api.Status
-
-import com.google.android.gms.location.*
-
-import java.text.DateFormat
-
-import java.util.*
-
-
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SensorEventListener2 {
@@ -70,16 +29,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener2 {
         setContentView(R.layout.activity_main)
 
         toggleButton.setOnClickListener {
-            // Handler code here.
+            // Luke's code here.
              isSensorRunning = ! isSensorRunning
              if (isSensorRunning == true){
                  startSensor()
-                 Toast.makeText(this, "Sensor is on, go ahead and smash your phone", Toast.LENGTH_LONG).show()
+                 Toast.makeText(this, "Sensor is on, go ahead and smash your phone.", Toast.LENGTH_LONG).show()
 
              }
             else {
                 stopSensor()
-                 Toast.makeText(this, "Sensor is off, did you smash your phone", Toast.LENGTH_SHORT).show()
+                 Toast.makeText(this, "Sensor is off, did you smash your phone?", Toast.LENGTH_SHORT).show()
 
              }
 
@@ -93,12 +52,18 @@ class MainActivity : AppCompatActivity(), SensorEventListener2 {
         Log.d(LOG_TAG, "onPause")
         sensorManager.unregisterListener(this);
     }
+
+
     override fun onResume() {
         super.onResume()
         Log.d(LOG_TAG, "onResume")
-
-
+        if (isSensorRunning == true) {
+            Log.d(LOG_TAG, "sensor was previously running, restarting it now")
+            startSensor()
+        }
     }
+
+
     fun startSensor() {
         sensorManager.registerListener(
                 this,
@@ -153,7 +118,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener2 {
 
     override fun onSensorChanged(event: SensorEvent?) {
         //Log.d(LOG_TAG, "onSensorChanged")
-        Log.d(LOG_TAG, event!!.values.zip("XYZ".toList()).fold("") {acc, pair -> "$acc${pair.second}: {$pair.first}"});
+        //Log.d(LOG_TAG, event!!.values.zip("XYZ".toList()).fold("") {acc, pair -> "$acc${pair.second}: {$pair.first}"});
     }
 
 
