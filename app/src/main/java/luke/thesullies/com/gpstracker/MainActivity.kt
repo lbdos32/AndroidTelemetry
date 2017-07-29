@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener2 {
 
     val LOG_TAG = "LOG_TELEMETRY";
 
+    var isSensorRunning :Boolean = true
 
     val sensorManager: SensorManager by lazy {
         getSystemService(Context.SENSOR_SERVICE) as SensorManager;
@@ -68,6 +69,21 @@ class MainActivity : AppCompatActivity(), SensorEventListener2 {
         Log.d(LOG_TAG, "onCreate")
         setContentView(R.layout.activity_main)
 
+        toggleButton.setOnClickListener {
+            // Handler code here.
+             isSensorRunning = ! isSensorRunning
+             if (isSensorRunning == true){
+                 startSensor()
+                 Toast.makeText(this, "Sensor is on, go ahead and smash your phone", Toast.LENGTH_LONG).show()
+
+             }
+            else {
+                stopSensor()
+                 Toast.makeText(this, "Sensor is off, did you smash your phone", Toast.LENGTH_SHORT).show()
+
+             }
+
+        }
     }
 
 
@@ -81,10 +97,19 @@ class MainActivity : AppCompatActivity(), SensorEventListener2 {
         super.onResume()
         Log.d(LOG_TAG, "onResume")
 
+
+    }
+    fun startSensor() {
         sensorManager.registerListener(
                 this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL)
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+    fun stopSensor() {
+        sensorManager.registerListener(
+                this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
     }
     override fun onStart() {
         super.onStart()
